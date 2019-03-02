@@ -1,5 +1,5 @@
 # Guide to implement dynamic filter with AJAX and DRF
-This is the example project for implementing synamic filters on list of data with the help of Django Rest Framework and AJAX
+This is the example project for implementing dynamic filters on list of data with the help of Django Rest Framework and AJAX.
 
 ![Promo GIF](https://github.com/djangopy-org/dynamic_filter/blob/master/promo.gif)
 
