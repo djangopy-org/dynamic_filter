@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block style %}
+    <style type="text/css">
+    .properties_table{
+        min-height: 540px;
+        font-size: 14px;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="site_filter">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select class="form-control" id="countries" url = "{%url 'wine:get_countries' %}">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="Variety">Variety</label>
+                        <select class="form-control" id="variety" url = "{%url 'wine:get_varieties' %}">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="Province">Province</label>
+                        <select class="form-control" id="province" url = "{%url 'wine:get_provinces' %}">
+                            <option value='all' selected>All Provinces</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="Region">Region</label>
+                        <select class="form-control" id="region" url = "{%url 'wine:get_regions' %}">
+                            <option value='all' selected>All Regions</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="Province">Sort By</label>
+                        <select class="form-control" id="sort_by">
+                            <option selected="true"
+                            disabled="disabled" value = "none">Choose option</option>
+                            <option value='price'>Price</option>
+                            <option value='points'>Points</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-2 col-2">
+                    <div class="row justify-content-center align-self-center"
+                        style="color:white; margin-top:30px;">
+                        <a class="btn btn-secondary" id="display_all">Display all</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br />
+    <section>
+        <div class="container-fluid">
+            <div class="row properties_table justify-content-center">
+                <div id = "no_results">
+                    <h5>No results found</h5>
+                </div>
+                <table class="table table-bordered table-responsive table-hover table-striped" id="list_data" data-toggle="table" url = "{% url 'wine:listing' %}">
+                    <thead>
+                        <tr>
+                            <th data-field="country">Country</th>
+                            <th data-field="taster_name">Taster name</th>
+                            <th data-field="title">Title</th>
+                            <th data-field="description">Description</th>
+                            <th data-field="designation">Designation</th>
+                            <th data-field="points">Points</th>
+                            <th data-field="price">Price</th>
+                            <th data-field="province">Province</th>
+                            <th data-field="region">Region</th>
+                            <th data-field="winery">Winery</th>
+                            <th data-field="variety">Variety</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listing">
+                    </tbody>
+                </table>
+            </div>
+            <div class="row justify-content-center">
+                <nav aria-label="navigation">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <button class="btn btn-primary page-link" id="previous">Previous</button>
+                        </li>
+                        <li class="page-item pull-right">
+                            <button class="btn btn-primary page-link" id="next">Next</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/wine.js' %}" type="text/javascript">
+    </script>
+{% endblock %}
