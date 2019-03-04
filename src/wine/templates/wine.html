@@ -3,8 +3,8 @@
 {% block style %}
     <style type="text/css">
     .properties_table{
-        min-height: 540px;
-        font-size: 14px;
+    min-height: 540px;
+    font-size: 14px;
     }
     </style>
 {% endblock %}
@@ -42,7 +42,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="col-sm-2 col-2">
                     <div class="form-group">
                         <label for="Province">Sort By</label>
@@ -54,7 +53,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="col-sm-2 col-2">
                     <div class="row justify-content-center align-self-center"
                         style="color:white; margin-top:30px;">
@@ -67,6 +65,9 @@
     <br />
     <section>
         <div class="container-fluid">
+            <div id = "result-count" class="text-right">
+                <span class='font-weight-bold'></span> results found.
+            </div>
             <div class="row properties_table justify-content-center">
                 <div id = "no_results">
                     <h5>No results found</h5>

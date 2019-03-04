@@ -1,7 +1,7 @@
 from rest_framework import pagination
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 7
+    # modify the default pagination style
+    page_size = 7 # set the page size to 7
     page_size_query_param = 'page_size'
-    max_page_size = 100
     

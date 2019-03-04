@@ -1,27 +1,41 @@
 var send_data = {}
 
 $(document).ready(function () {
+    // reset all parameters on page load
     resetFilters();
+    // bring all the data without any filters
     getAPIData();
+    // get all countries from database via 
+    // AJAX call into country select options
     getCountries();
+    // get all varities from database via 
+    // AJAX call into variert select options
     getvariety();
 
+    // on selecting the country option
     $('#countries').on('change', function () {
+        // since province and region is dependent 
+        // on country select, emty all the options from select input
         $("#province").val("all");
         $("#region").val("all");
         send_data['province'] = '';
         send_data['region'] = '';
 
+        // update the selected country
         if(this.value == "all")
             send_data['country'] = "";
-        else{
+        else
             send_data['country'] = this.value;
-            getProvince(this.value);
-        }
+
+        //get province of selected country
+        getProvince(this.value);
+        // get api data of updated filters
         getAPIData();
     });
 
+    // on filtering the variety input
     $('#variety').on('change', function () {
+        // get the api data of updated variety
         if(this.value == "all")
             send_data['variety'] = "";
         else
@@ -29,7 +43,10 @@ $(document).ready(function () {
         getAPIData();
     });
 
+    // on filtering the province input
     $('#province').on('change', function () {
+        // clear the region input 
+        // since it is dependent on province input
         send_data['region'] = "";
         $('#region').val("all");
         if(this.value == "all")
@@ -40,6 +57,7 @@ $(document).ready(function () {
         getAPIData();
     });
 
+    // on filtering the region input
     $('#region').on('change', function () {
         if(this.value == "all")
             send_data['region'] = "";
@@ -48,17 +66,23 @@ $(document).ready(function () {
         getAPIData();
     });
 
+    // sort the data according to price/points
     $('#sort_by').on('change', function () {
         send_data['sort_by'] = this.value;
         getAPIData();
     });
 
+    // display the results after reseting the filters
     $("#display_all").click(function(){
         resetFilters();
         getAPIData();
     })
 })
 
+
+/**
+    Function that resets all the filters   
+**/
 function resetFilters() {
     $("#countries").val("all");
     $("#province").val("all");
@@ -66,6 +90,7 @@ function resetFilters() {
     $("#variety").val("all");
     $("#sort_by").val("none");
 
+    //clearing up the province and region select box
     getProvince("all");
     getRegion("all");
 
@@ -77,13 +102,20 @@ function resetFilters() {
     send_data['format'] = 'json';
 }
 
+/**.
+    Utility function to showcase the api data 
+    we got from backend to the table content
+**/
 function putTableData(result) {
-    let table_content = "";
+    // creating table row for each result and
+    // pushing to the html cntent of table body of listing table
+    let row;
     if(result["results"].length > 0){
         $("#no_results").hide();
         $("#list_data").show();
+        $("#listing").html("");  
         $.each(result["results"], function (a, b) {
-            table_content += "<tr> <td>" + b.country + "</td>" +
+            row = "<tr> <td>" + b.country + "</td>" +
             "<td>" + b.taster_name + "</td>" +
             "<td title=\"" + b.title + "\">" + b.title.slice(0, 50) + "..." + "</td>" +
                 "<td title=\"" + b.description + "\">" + b.description.slice(0, 60) + "..." + "</td>" +
@@ -94,18 +126,19 @@ function putTableData(result) {
                 "<td>" + b.region + "</td>" +
                 "<td>" + b.winery + "</td>" +
                 "<td>" + b.variety + "</td></tr>"
+            $("#listing").append(row);   
         });
-        $("#listing").html(table_content);     
     }
     else{
+        // if no result found for the given filter, then display no result
         $("#no_results h5").html("No results found");
         $("#list_data").hide();
         $("#no_results").show();
     }
-
-    prev_url = result["previous"];
-    next_url = result["next"];
-
+    // setting previous and next page url for the given result
+    let prev_url = result["previous"];
+    let next_url = result["next"];
+    // disabling-enabling button depending on existence of next/prev page. 
     if (prev_url === null) {
         $("#previous").addClass("disabled");
         $("#previous").prop('disabled', true);
@@ -120,8 +153,11 @@ function putTableData(result) {
         $("#next").removeClass("disabled");
         $("#next").prop('disabled', false);
     }
+    // setting the url
     $("#previous").attr("url", result["previous"]);
     $("#next").attr("url", result["next"]);
+    // displaying result count
+    $("#result-count span").html(result["count"]);
 }
 
 function getAPIData() {
@@ -131,7 +167,7 @@ function getAPIData() {
         url: url,
         data: send_data,
         beforeSend: function(){
-            $("#no_results h5").html("No data to show");
+            $("#no_results h5").html("Loading data...");
         },
         success: function (result) {
             putTableData(result);
