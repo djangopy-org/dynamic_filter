@@ -60,7 +60,7 @@ This is the example project for implementing dynamic filters on list of data wit
 	- **For Linux/Mac**
 		
 		`
-			python manage.py runserver
+			python3 manage.py runserver
 		`
 
 	- **For Windows**
